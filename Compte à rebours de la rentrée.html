@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compte à Rebours de la Rentrée Scolaire</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+        
+        .header {
+            margin-bottom: 20px;
+        }
+        
+        .time {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .title {
+            font-size: 23px;
+            font-weight: bold;
+            color: #1a2a6c;
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 25px;
+        }
+        
+        .countdown {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .countdown-box {
+            background: linear-gradient(145deg, #1a2a6c, #253a9c);
+            color: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .countdown-value {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .countdown-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        button {
+            background: linear-gradient(to right, #1a2a6c, #253a9c);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .footer {
+            font-size: 14px;
+            color: #777;
+            margin-top: 10px;
+        }
+        
+        .footer a {
+            color: #1a2a6c;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .countdown {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            .buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="time" id="current-time">7:34 AM</div>
+            <div class="title">COMPTE À REBOURS</div>
+            <div class="subtitle">De la Rentrée Scolaire💔.Vous êtes prêts j'espère😹<br>
+            Temps restant jusqu'au 1er octobre 2025 à 7h 00</div>
+        </div>
+        
+        <div class="countdown">
+            <div class="countdown-box">
+                <div class="countdown-value" id="days">00</div>
+                <div class="countdown-label">JOURS</div>
+            </div>
+            <div class="countdown-box">
+                <div class="countdown-value" id="hours">00</div>
+                <div class="countdown-label">HEURES</div>
+            </div>
+            <div class="countdown-box">
+                <div class="countdown-value" id="minutes">00</div>
+                <div class="countdown-label">MINUTES</div>
+            </div>
+            <div class="countdown-box">
+                <div class="countdown-value" id="seconds">00</div>
+                <div class="countdown-label">SECONDES</div>
+            </div>
+        </div>
+        <div class="footer">
+            <br>©2025
+            Par <a href="#">aY Hack🥀</a>( S.W.Abimaël Yaméogo).
+        </div>
+    </div>
+
+    <script>
+        // Cible : 1er octobre 2025
+        const targetDate = new Date('October 1, 2025 07:00:00').getTime();
+        
+        // Éléments du compte à rebours
+        const daysElement = document.getElementById('days');
+        const hoursElement = document.getElementById('hours');
+        const minutesElement = document.getElementById('minutes');
+        const secondsElement = document.getElementById('seconds');
+        const currentTimeElement = document.getElementById('current-time');
+        
+        // Mise à jour de l'heure actuelle
+        function updateCurrentTime() {
+            const now = new Date();
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            
+            hours = hours % 12;
+            hours = hours ? hours : 12; // Convertir 0 en 12
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            
+            currentTimeElement.textContent = `${hours}:${minutes} ${ampm}`;
+        }
+        
+        // Mise à jour du compte à rebours
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const timeRemaining = targetDate - now;
+            
+            if (timeRemaining <= 0) {
+                // Le compte à rebours est terminé
+                daysElement.textContent = '00';
+                hoursElement.textContent = '00';
+                minutesElement.textContent = '00';
+                secondsElement.textContent = '00';
+                return;
+            }
+            
+            // Calcul des jours, heures, minutes et secondes
+            const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+            
+            // Mise à jour de l'affichage
+            daysElement.textContent = days < 10 ? '0' + days : days;
+            hoursElement.textContent = hours < 10 ? '0' + hours : hours;
+            minutesElement.textContent = minutes < 10 ? '0' + minutes : minutes;
+            secondsElement.textContent = seconds < 10 ? '0' + seconds : seconds;
+        }
+        
+        // Initialisation
+        updateCurrentTime();
+        updateCountdown();
+        
+        // Mise à jour toutes les secondes
+        setInterval(updateCountdown, 1000);
+        setInterval(updateCurrentTime, 60000); // Mise à jour de l'heure chaque minute
+        
+        // Gestion des boutons
+        document.getElementById('set-btn').addEventListener('click', function() {
+            alert('Fonctionnalité "Définir" à implémenter');
+        });
+        
+        document.getElementById('reset-btn').addEventListener('click', function() {
+            alert('Fonctionnalité "Réinitialiser" à implémenter');
+        });
+    </script>
+</body>
+</html>
